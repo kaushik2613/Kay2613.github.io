@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Developer Portfolio</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg-primary: #0a0e27;
+            --bg-secondary: #1a1f3a;
+            --accent-primary: #7c3aed;
+            --accent-secondary: #06b6d4;
+            --text-primary: #f0f0f0;
+            --text-secondary: #a0a0a0;
+            --gradient: linear-gradient(135deg, #7c3aed 0%, #06b6d4 100%);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        nav {
+            position: fixed; top: 0; width: 100%;
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000; padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid rgba(124, 58, 237, 0.2);
+        }
+        nav .logo { font-size: 1.5rem; font-weight: bold; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        nav ul { display: flex; list-style: none; gap: 1.5rem; }
+        nav a { color: var(--text-secondary); text-decoration: none; transition: color 0.3s; cursor: pointer; font-size: 0.9rem; }
+        nav a:hover { color: var(--accent-secondary); }
+        @media (max-width: 768px) { nav ul { gap: 0.8rem; font-size: 0.8rem; } }
+
+        .hero-pic-and-content { width: 85%; padding: 5px; display: flex; justify-content: space-evenly; align-items: center; }
+        .photo-container img { width: 250px; height: 250px; border-radius: 50%; object-fit: cover; border: 4px solid var(--accent-primary); box-shadow: 0 0 20px rgba(124, 58, 237, 0.4); }
+        .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(124,58,237,0.1) 0%, rgba(6,182,212,0.1) 100%); position: relative; overflow: hidden; margin-top: 60px; padding: 2rem; }
+        .hero canvas { position: absolute; top: 0; left: 0; }
+        .hero-content { text-align: center; z-index: 10; max-width: 800px; animation: fadeInUp 0.8s ease-out; }
+        .hero h1 { font-size: 3.5rem; margin-bottom: 1rem; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .hero h2 { font-size: 1.5rem; color: var(--text-secondary); margin-bottom: 2rem; }
+        .typing-text { font-size: 1.2rem; color: var(--accent-secondary); min-height: 30px; margin-bottom: 3rem; font-weight: 500; }
+        .cursor { display: inline-block; width: 2px; height: 1.2rem; background: var(--accent-secondary); margin-left: 5px; animation: blink 0.7s infinite; }
+        @keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .hero-buttons { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; }
+        .animated-btn { display: inline-flex; align-items: center; gap: 0.8rem; padding: 15px 40px; font-size: 1rem; font-weight: 600; border: none; border-radius: 50px; cursor: pointer; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(124,58,237,0.3); position: relative; overflow: hidden; color: white; }
+        .animated-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: left 0.5s; }
+        .animated-btn.github { background: linear-gradient(135deg, #7c3aed 0%, #3b82f6 100%); }
+        .animated-btn.linkedin { background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); }
+        .animated-btn:hover { transform: scale(1.05); box-shadow: 0 8px 25px rgba(124,58,237,0.6), 0 0 20px rgba(6,182,212,0.4); }
+        .animated-btn:hover::before { left: 100%; }
+        .animated-btn:active { transform: scale(0.95); }
+        .btn-icon { width: 20px; height: 20px; }
+        @media (max-width: 768px) { .hero h1 { font-size: 2.5rem; } .hero h2 { font-size: 1.2rem; } .hero-buttons { gap: 1rem; } .animated-btn { padding: 12px 30px; font-size: 0.9rem; } }
+
+        .about { padding: 100px 2rem; max-width: 1200px; margin: 0 auto; opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .about.visible { opacity: 1; transform: translateY(0); }
+        .section-title { font-size: 2.5rem; margin-bottom: 3rem; text-align: center; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .about-container { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+        .about-card p { line-height: 1.8; color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 1.5rem; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+        .stat-item { background: var(--bg-secondary); padding: 2rem; border-radius: 10px; border: 1px solid rgba(124,58,237,0.2); text-align: center; transition: all 0.3s ease; }
+        .stat-item:hover { border-color: var(--accent-secondary); box-shadow: 0 0 20px rgba(6,182,212,0.2); }
+        .stat-value { font-size: 2rem; font-weight: bold; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .stat-label { color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.5rem; }
+        @media (max-width: 768px) { .about-container { grid-template-columns: 1fr; gap: 2rem; } .stats-grid { grid-template-columns: repeat(3, 1fr); gap: 1rem; } .stat-item { padding: 1.5rem; } }
+
+        /* ============ EDUCATION SECTION ============ */
+        .education { padding: 100px 2rem; max-width: 1200px; margin: 0 auto; opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .education.visible { opacity: 1; transform: translateY(0); }
+        .education-timeline { position: relative; padding-left: 2rem; }
+        .education-timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--gradient); border-radius: 2px; }
+        .edu-item { position: relative; margin-bottom: 3rem; padding-left: 2rem; }
+        .edu-item::before { content: ''; position: absolute; left: -2.45rem; top: 0.4rem; width: 14px; height: 14px; border-radius: 50%; background: var(--gradient); border: 2px solid var(--bg-primary); box-shadow: 0 0 10px rgba(124,58,237,0.6); }
+        .edu-card { background: var(--bg-secondary); border: 1px solid rgba(124,58,237,0.2); border-radius: 14px; padding: 1.8rem 2rem; transition: all 0.3s ease; }
+        .edu-card:hover { border-color: var(--accent-secondary); box-shadow: 0 10px 30px rgba(6,182,212,0.15); transform: translateX(6px); }
+        .edu-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem; }
+        .edu-degree { font-size: 1.15rem; font-weight: 700; color: var(--text-primary); }
+        .edu-date { font-size: 0.82rem; color: var(--accent-secondary); font-weight: 600; background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.25); padding: 0.25rem 0.75rem; border-radius: 20px; white-space: nowrap; }
+        .edu-school { font-size: 1rem; color: var(--accent-primary); font-weight: 600; margin-bottom: 0.8rem; }
+        .edu-details { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 0.8rem; }
+        .edu-badge { font-size: 0.78rem; font-weight: 600; padding: 0.3rem 0.85rem; border-radius: 20px; }
+        .edu-badge.gpa { background: rgba(124,58,237,0.15); color: #a87cf5; border: 1px solid rgba(124,58,237,0.3); }
+        .edu-badge.award { background: rgba(255,193,7,0.1); color: #ffc107; border: 1px solid rgba(255,193,7,0.3); }
+        .edu-badge.field { background: rgba(6,182,212,0.1); color: var(--accent-secondary); border: 1px solid rgba(6,182,212,0.25); }
+        @media (max-width: 768px) { .edu-header { flex-direction: column; } }
+
+        .projects { padding: 100px 2rem; background: linear-gradient(135deg, rgba(124,58,237,0.05) 0%, rgba(6,182,212,0.05) 100%); opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .projects.visible { opacity: 1; transform: translateY(0); }
+        .projects-container { max-width: 1200px; margin: 0 auto; }
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 3rem; }
+        .project-card { background: var(--bg-secondary); border: 1px solid rgba(124,58,237,0.2); border-radius: 14px; padding: 2rem; transition: all 0.3s ease; display: flex; flex-direction: column; }
+        .project-card:hover { transform: translateY(-8px); border-color: var(--accent-secondary); box-shadow: 0 15px 40px rgba(6,182,212,0.2); }
+        .project-card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem; margin-bottom: 0.6rem; flex-wrap: wrap; }
+        .project-title { font-size: 1.15rem; font-weight: 700; color: var(--text-primary); }
+        .project-date { font-size: 0.75rem; color: var(--accent-secondary); font-weight: 600; background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.25); padding: 0.2rem 0.65rem; border-radius: 20px; white-space: nowrap; }
+        .project-location { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.8rem; }
+        .project-bullets { list-style: none; padding: 0; margin-bottom: 1.2rem; }
+        .project-bullets li { position: relative; padding-left: 1.3rem; color: var(--text-secondary); line-height: 1.65; font-size: 0.92rem; margin-bottom: 0.4rem; }
+        .project-bullets li::before { content: '▸'; position: absolute; left: 0; color: var(--accent-secondary); font-size: 0.8rem; top: 0.15rem; }
+        .project-description { color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.2rem; font-size: 0.92rem; }
+        .project-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 1rem; border-top: 1px solid rgba(124,58,237,0.12); gap: 0.5rem; flex-wrap: wrap; }
+        .project-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .tag { background: rgba(124,58,237,0.15); color: var(--accent-primary); padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem; border: 1px solid rgba(124,58,237,0.35); }
+        .project-github-btn { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.75rem; font-weight: 700; color: white; text-decoration: none; padding: 0.35rem 1rem; border-radius: 20px; background: var(--gradient); transition: opacity 0.2s, transform 0.2s; white-space: nowrap; flex-shrink: 0; }
+        .project-github-btn:hover { opacity: 0.85; transform: scale(1.05); }
+        .project-github-btn svg { width: 13px; height: 13px; fill: currentColor; flex-shrink: 0; }
+
+        /* ============ WORK EXPERIENCE SECTION ============ */
+        .experience { padding: 100px 2rem; max-width: 1200px; margin: 0 auto; opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .experience.visible { opacity: 1; transform: translateY(0); }
+        .exp-timeline { position: relative; padding-left: 2rem; }
+        .exp-timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--gradient); border-radius: 2px; }
+        .exp-item { position: relative; margin-bottom: 3rem; padding-left: 2rem; }
+        .exp-item:last-child { margin-bottom: 0; }
+        .exp-item::before { content: ''; position: absolute; left: -2.45rem; top: 0.4rem; width: 14px; height: 14px; border-radius: 50%; background: var(--gradient); border: 2px solid var(--bg-primary); box-shadow: 0 0 10px rgba(124,58,237,0.6); }
+        .exp-card { background: var(--bg-secondary); border: 1px solid rgba(124,58,237,0.2); border-radius: 14px; padding: 1.8rem 2rem; transition: all 0.3s ease; }
+        .exp-card:hover { border-color: var(--accent-secondary); box-shadow: 0 10px 30px rgba(6,182,212,0.15); transform: translateX(6px); }
+        .exp-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.3rem; }
+        .exp-title { font-size: 1.15rem; font-weight: 700; color: var(--text-primary); }
+        .exp-date { font-size: 0.82rem; color: var(--accent-secondary); font-weight: 600; background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.25); padding: 0.25rem 0.75rem; border-radius: 20px; white-space: nowrap; }
+        .exp-company { font-size: 1rem; color: var(--accent-primary); font-weight: 600; margin-bottom: 1rem; }
+        .exp-bullets { list-style: none; padding: 0; }
+        .exp-bullets li { position: relative; padding-left: 1.4rem; color: var(--text-secondary); line-height: 1.7; font-size: 0.95rem; margin-bottom: 0.5rem; }
+        .exp-bullets li::before { content: '▸'; position: absolute; left: 0; color: var(--accent-secondary); font-size: 0.85rem; top: 0.1rem; }
+        .exp-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(124,58,237,0.12); }
+        .exp-tag { font-size: 0.72rem; font-weight: 600; padding: 0.25rem 0.7rem; border-radius: 20px; background: rgba(124,58,237,0.12); color: #a87cf5; border: 1px solid rgba(124,58,237,0.3); }
+        @media (max-width: 768px) { .exp-header { flex-direction: column; } }
+
+        /* ============ PUBLICATIONS SECTION ============ */
+        .publications { padding: 100px 2rem; background: linear-gradient(135deg, rgba(124,58,237,0.05) 0%, rgba(6,182,212,0.05) 100%); opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .publications.visible { opacity: 1; transform: translateY(0); }
+        .publications-inner { max-width: 1200px; margin: 0 auto; }
+        .pub-card { background: var(--bg-secondary); border: 1px solid rgba(124,58,237,0.2); border-radius: 16px; padding: 2rem; position: relative; overflow: hidden; transition: all 0.35s ease; }
+        .pub-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--gradient); transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease; }
+        .pub-card:hover { transform: translateY(-6px); border-color: rgba(124,58,237,0.45); box-shadow: 0 16px 40px rgba(124,58,237,0.18); }
+        .pub-card:hover::before { transform: scaleX(1); }
+        .pub-card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+        .pub-title { font-size: 1.2rem; font-weight: 700; color: var(--text-primary); line-height: 1.4; }
+        .pub-date { font-size: 0.8rem; color: var(--accent-secondary); font-weight: 600; background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.25); padding: 0.3rem 0.85rem; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+        .pub-venue { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; font-weight: 700; color: #f59e0b; background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3); padding: 0.3rem 0.85rem; border-radius: 20px; margin-bottom: 1rem; }
+        .pub-location { font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 1rem; }
+        .pub-bullets { list-style: none; padding: 0; margin-bottom: 1.2rem; }
+        .pub-bullets li { position: relative; padding-left: 1.4rem; color: var(--text-secondary); line-height: 1.7; font-size: 0.95rem; margin-bottom: 0.5rem; }
+        .pub-bullets li::before { content: '▸'; position: absolute; left: 0; color: var(--accent-secondary); font-size: 0.85rem; top: 0.1rem; }
+        .pub-footer { display: flex; flex-wrap: wrap; gap: 0.5rem; padding-top: 1rem; border-top: 1px solid rgba(124,58,237,0.12); }
+        .pub-tag { font-size: 0.75rem; font-weight: 600; padding: 0.28rem 0.8rem; border-radius: 20px; background: rgba(124,58,237,0.12); color: #a87cf5; border: 1px solid rgba(124,58,237,0.3); }
+
+        .skills { padding: 100px 2rem; max-width: 1200px; margin: 0 auto; opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .skills.visible { opacity: 1; transform: translateY(0); }
+        .skills-container { margin-top: 3rem; }
+        .skills-category { margin-bottom: 3rem; }
+        .category-title { font-size: 1.3rem; margin-bottom: 1.5rem; color: var(--accent-secondary); }
+        .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
+        .skill-card { background: var(--bg-secondary); padding: 1.5rem; border-radius: 10px; border: 1px solid rgba(124,58,237,0.2); }
+        .skill-header { display: flex; justify-content: space-between; margin-bottom: 0.8rem; font-size: 0.95rem; }
+        .skill-name { font-weight: 600; color: var(--text-primary); }
+        .skill-level { color: var(--accent-secondary); font-weight: 600; }
+        .skill-bar { background: rgba(124,58,237,0.1); height: 6px; border-radius: 3px; overflow: hidden; }
+        .skill-progress { height: 100%; background: var(--gradient); border-radius: 3px; width: 0; transition: width 1s ease-out; }
+
+        .certificates { padding: 100px 2rem; background: linear-gradient(135deg, rgba(124,58,237,0.05) 0%, rgba(6,182,212,0.05) 100%); opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .certificates.visible { opacity: 1; transform: translateY(0); }
+        .certificates-inner { max-width: 1300px; margin: 0 auto; }
+        .certs-summary { display: flex; justify-content: center; gap: 4rem; margin-bottom: 3rem; flex-wrap: wrap; }
+        .cert-stat { text-align: center; }
+        .cert-stat-value { font-size: 2.8rem; font-weight: bold; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; }
+        .cert-stat-label { color: var(--text-secondary); font-size: 0.85rem; margin-top: 0.4rem; }
+        .cert-filter-tabs { display: flex; justify-content: center; gap: 0.8rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+        .cert-tab { padding: 0.5rem 1.4rem; border-radius: 50px; border: 1px solid rgba(124,58,237,0.3); background: transparent; color: var(--text-secondary); font-size: 0.85rem; cursor: pointer; transition: all 0.3s ease; font-family: inherit; }
+        .cert-tab:hover, .cert-tab.active { background: var(--gradient); border-color: transparent; color: white; }
+        .certificates-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 1.5rem; }
+        a.cert-card { text-decoration: none; color: inherit; }
+        .cert-card { background: var(--bg-secondary); border: 1px solid rgba(124,58,237,0.15); border-radius: 16px; padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; transition: all 0.35s ease; position: relative; overflow: hidden; cursor: pointer; }
+        .cert-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--gradient); transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease; }
+        .cert-card:hover { transform: translateY(-6px); border-color: rgba(124,58,237,0.45); box-shadow: 0 16px 40px rgba(124,58,237,0.18); }
+        .cert-card:hover::before { transform: scaleX(1); }
+        .cert-card.hidden { display: none; }
+        .cert-card-top { display: flex; align-items: center; gap: 1rem; }
+        .cert-badge-img { flex-shrink: 0; width: 64px; height: 64px; border-radius: 12px; object-fit: contain; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); padding: 6px; }
+        .cert-badge-icon { flex-shrink: 0; width: 64px; height: 64px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; }
+        .cert-badge-icon.aws { background: linear-gradient(135deg, rgba(255,153,0,0.18), rgba(255,153,0,0.05)); border: 1px solid rgba(255,153,0,0.35); }
+        .cert-badge-icon.oracle { background: linear-gradient(135deg, rgba(240,60,40,0.18), rgba(240,60,40,0.05)); border: 1px solid rgba(240,60,40,0.35); }
+        .cert-badge-icon.databricks { background: linear-gradient(135deg, rgba(255,62,29,0.18), rgba(255,62,29,0.05)); border: 1px solid rgba(255,62,29,0.3); }
+        .cert-badge-icon.udemy { background: linear-gradient(135deg, rgba(164,69,227,0.18), rgba(164,69,227,0.05)); border: 1px solid rgba(164,69,227,0.35); }
+        .cert-badge-icon.microsoft { background: linear-gradient(135deg, rgba(0,120,215,0.18), rgba(0,120,215,0.05)); border: 1px solid rgba(0,120,215,0.35); }
+        .cert-info { flex: 1; min-width: 0; }
+        .cert-title { font-size: 0.92rem; font-weight: 700; color: var(--text-primary); line-height: 1.4; margin-bottom: 0.3rem; }
+        .cert-issuer { font-size: 0.75rem; color: var(--accent-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+        .cert-verified { flex-shrink: 0; width: 26px; height: 26px; background: var(--gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; align-self: flex-start; }
+        .cert-verified svg { width: 13px; height: 13px; stroke: white; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+        .cert-skills { display: flex; flex-wrap: wrap; gap: 0.45rem; padding-top: 0.5rem; border-top: 1px solid rgba(124,58,237,0.12); }
+        .cert-skill-tag { font-size: 0.72rem; font-weight: 500; padding: 0.25rem 0.7rem; border-radius: 20px; border: 1px solid; }
+        .cert-skill-tag.aws { background: rgba(255,153,0,0.1); color: #ffb733; border-color: rgba(255,153,0,0.3); }
+        .cert-skill-tag.oracle { background: rgba(240,60,40,0.1); color: #f56c58; border-color: rgba(240,60,40,0.3); }
+        .cert-skill-tag.db { background: rgba(255,62,29,0.1); color: #ff6e5a; border-color: rgba(255,62,29,0.3); }
+        .cert-skill-tag.py { background: rgba(55,118,171,0.1); color: #5ba3d0; border-color: rgba(55,118,171,0.3); }
+        .cert-skill-tag.ms { background: rgba(0,120,215,0.1); color: #4ca8f0; border-color: rgba(0,120,215,0.3); }
+        .cert-skill-tag.gen { background: rgba(124,58,237,0.12); color: #a87cf5; border-color: rgba(124,58,237,0.3); }
+        .cert-card-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 0.65rem; border-top: 1px solid rgba(124,58,237,0.12); margin-top: auto; gap: 0.5rem; }
+        .cert-pdf-btn { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.72rem; font-weight: 600; color: var(--text-secondary); text-decoration: none; padding: 0.3rem 0.75rem; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); transition: all 0.2s ease; }
+        .cert-pdf-btn:hover { color: var(--text-primary); border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.08); }
+        .cert-verify-btn { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.72rem; font-weight: 700; color: white; text-decoration: none; padding: 0.3rem 0.9rem; border-radius: 20px; background: var(--gradient); border: none; cursor: pointer; transition: opacity 0.2s ease, transform 0.2s ease; letter-spacing: 0.02em; }
+        .cert-verify-btn:hover { opacity: 0.85; transform: scale(1.05); }
+        .cert-verify-btn svg, .cert-pdf-btn svg { width: 11px; height: 11px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+        @media (max-width: 768px) { .certificates-grid { grid-template-columns: 1fr; } .certs-summary { gap: 2rem; } .cert-filter-tabs { gap: 0.5rem; } }
+
+        .contact { padding: 100px 2rem; background: linear-gradient(135deg, rgba(124,58,237,0.05) 0%, rgba(6,182,212,0.05) 100%); text-align: center; opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .contact.visible { opacity: 1; transform: translateY(0); }
+        .contact-container { max-width: 600px; margin: 0 auto; }
+        .contact-card { background: var(--bg-secondary); padding: 3rem 2rem; border-radius: 10px; border: 1px solid rgba(124,58,237,0.2); }
+        .contact-text { color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 2rem; line-height: 1.8; }
+        .contact-email { display: inline-flex; align-items: center; gap: 0.8rem; padding: 15px 40px; background: var(--gradient); color: white; text-decoration: none; border-radius: 50px; transition: all 0.3s ease; font-weight: 600; box-shadow: 0 4px 15px rgba(124,58,237,0.3); }
+        .contact-email:hover { transform: scale(1.05); box-shadow: 0 8px 25px rgba(124,58,237,0.6); }
+        .contact-email svg { width: 20px; height: 20px; }
+
+        footer { background: var(--bg-secondary); padding: 3rem 2rem; text-align: center; border-top: 1px solid rgba(124,58,237,0.2); }
+        .footer-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1.5rem; }
+        .footer-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--text-secondary); text-decoration: none; transition: color 0.3s; }
+        .footer-link:hover { color: var(--accent-secondary); }
+        .footer-link svg { width: 20px; height: 20px; }
+        .footer-text { color: var(--text-secondary); font-size: 0.9rem; }
+
+        .scroll-top { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background: var(--gradient); color: white; border: none; border-radius: 50%; font-size: 1.5rem; cursor: pointer; z-index: 999; opacity: 0; visibility: hidden; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(124,58,237,0.4); display: flex; align-items: center; justify-content: center; }
+        .scroll-top.visible { opacity: 1; visibility: visible; }
+        .scroll-top:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(124,58,237,0.6); }
+        @media (max-width: 768px) { .section-title { font-size: 2rem; } .projects-grid { grid-template-columns: 1fr; } .footer-links { gap: 1rem; flex-wrap: wrap; } .scroll-top { bottom: 20px; right: 20px; width: 45px; height: 45px; font-size: 1.2rem; } }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">Kaushik Budur</div>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#education">Education</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#publications">Publications</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#certificates">Certificates</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero" id="home">
+        <canvas id="particles-canvas"></canvas>
+        <div class="hero-pic-and-content">
+            <div class="photo-container">
+                <img src="WhatsApp Image 2025-11-04 at 12.31.39 PM.jpeg" alt="Kaushik Budur">
+            </div>
+            <div class="hero-content">
+                <h1>Data Scientist</h1>
+                <h2>Data Science Graduate Student | AWS & Oracle AI Certified | Machine Learning • Cloud Computing • Data Analytics | Python • SQL • Tableau</h2>
+                <div class="typing-text"></div>
+                <div class="hero-buttons">
+                    <a href="https://github.com/kaushik2613" target="_blank" rel="noopener noreferrer" class="animated-btn github">
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                        <span>View GitHub</span>
+                    </a>
+                    <a href="https://www.linkedin.com/in/budur-kaushik-407014191/" target="_blank" rel="noopener noreferrer" class="animated-btn linkedin">
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                        <span>Connect on LinkedIn</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about" id="about">
+        <h2 class="section-title">About Me</h2>
+        <div class="about-container">
+            <div class="about-card">
+                <p>I'm a Data Science graduate student at the University of Texas at Arlington, passionate about transforming data into meaningful insights through machine learning, AI, and cloud technologies. I hold multiple industry-recognized certifications, including AWS Cloud Practitioner, AWS AI Practitioner, Oracle DevOps Professional, Data Science Professional, and Networking Professional, reflecting a strong foundation across cloud infrastructure, intelligent systems, and data engineering. My GitHub portfolio showcases projects in machine learning and deep learning — implementing models like CNNs, RNNs, and LSTMs for image classification and reinforcement learning. I've also built interactive dashboards and predictive analytics using Python, R, Tableau, Power BI, and Excel, along with experience in Databricks, SQL, and AWS-based ETL workflows. I'm actively exploring opportunities as a Data Scientist, Machine Learning Engineer, Data Analyst, Cloud Data Engineer, AI Engineer, Business Intelligence Analyst, or MLOps Engineer.</p>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-item"><div class="stat-value">1+</div><div class="stat-label">Years Ex</div></div>
+                <div class="stat-item"><div class="stat-value">10+</div><div class="stat-label">AI/ML Projects</div></div>
+                <div class="stat-item"><div class="stat-value">15+</div><div class="stat-label">Technologies</div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ EDUCATION SECTION ============ -->
+    <section class="education" id="education">
+        <h2 class="section-title">Education</h2>
+        <div class="education-timeline">
+
+            <div class="edu-item">
+                <div class="edu-card">
+                    <div class="edu-header">
+                        <div class="edu-degree">MS in Data Science</div>
+                        <span class="edu-date">Aug 2024 – Present</span>
+                    </div>
+                    <div class="edu-school">University of Texas at Arlington — Arlington, TX</div>
+                    <div class="edu-details">
+                        <span class="edu-badge gpa">🎓 4.0 / 4.0 GPA</span>
+                        <span class="edu-badge award">🏆 DOE Dean's Scholarship</span>
+                        <span class="edu-badge field">Machine Learning</span>
+                        <span class="edu-badge field">Cloud Computing</span>
+                        <span class="edu-badge field">Data Analytics</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="edu-item">
+                <div class="edu-card">
+                    <div class="edu-header">
+                        <div class="edu-degree">B.Tech in Electronics &amp; Communication Engineering</div>
+                        <span class="edu-date">Jul 2019 – Jul 2023</span>
+                    </div>
+                    <div class="edu-school">Amrita Vishwa Vidyapeetham — Bengaluru, India</div>
+                    <div class="edu-details">
+                        <span class="edu-badge field">VLSI Design</span>
+                        <span class="edu-badge field">Embedded Systems</span>
+                        <span class="edu-badge field">Signal Processing</span>
+                        <span class="edu-badge field">Verilog / FPGA</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="projects" id="projects">
+        <div class="projects-container">
+            <h2 class="section-title">AI/ML-Powered Projects</h2>
+            <div class="projects-grid">
+
+                <!-- 1. Image Classification -->
+                <div class="project-card">
+                    <div class="project-card-header">
+                        <h3 class="project-title">Image Classification with CNN &amp; ResNet-18</h3>
+                        <span class="project-date">Jan – Feb 2025</span>
+                    </div>
+                    <div class="project-location">UTA | Arlington, TX</div>
+                    <ul class="project-bullets">
+                        <li>Built and validated deep learning models on CIFAR-10 dataset.</li>
+                        <li>Improved accuracy by <strong style="color:var(--accent-secondary)">15%</strong> with transfer learning using ResNet-18.</li>
+                    </ul>
+                    <div class="project-footer">
+                        <div class="project-tags"><span class="tag">Python</span><span class="tag">PyTorch</span><span class="tag">ResNet-18</span><span class="tag">CIFAR-10</span></div>
+                        <a href="https://github.com/kaushik2613" target="_blank" rel="noopener noreferrer" class="project-github-btn">
+                            <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                            GitHub
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 2. Reinforcement Learning -->
+                <div class="project-card">
+                    <div class="project-card-header">
+                        <h3 class="project-title">Reinforcement Learning Agent</h3>
+                        <span class="project-date">Jan – Feb 2025</span>
+                    </div>
+                    <div class="project-location">UTA | Arlington, TX</div>
+                    <ul class="project-bullets">
+                        <li>Implemented Q-Learning and Deep Q-Learning agents on Frozen Lake &amp; Atari environments.</li>
+                        <li>Tuned hyperparameters to enhance learning performance and convergence speed.</li>
+                    </ul>
+                    <div class="project-footer">
+                        <div class="project-tags"><span class="tag">Deep Q-Learning</span><span class="tag">OpenAI Gym</span><span class="tag">Python</span><span class="tag">Hyperparameter Tuning</span></div>
+                        <a href="https://github.com/kaushik2613" target="_blank" rel="noopener noreferrer" class="project-github-btn">
+                            <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                            GitHub
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 3. Interactive Dashboards -->
+                <div class="project-card">
+                    <div class="project-card-header">
+                        <h3 class="project-title">Interactive Dashboards (Power BI &amp; Tableau)</h3>
+                        <span class="project-date">Mar – Apr 2025</span>
+                    </div>
+                    <div class="project-location">UTA | Arlington, TX</div>
+                    <ul class="project-bullets">
+                        <li>Designed dynamic dashboards with geomaps, KPIs, and interactive filters.</li>
+                        <li>Boosted reporting efficiency by <strong style="color:var(--accent-secondary)">10%</strong> through automated visual analytics.</li>
+                    </ul>
+                    <div class="project-footer">
+                        <div class="project-tags"><span class="tag">Power BI</span><span class="tag">Tableau</span><span class="tag">KPI Design</span><span class="tag">Data Visualization</span></div>
+                        <a href="https://github.com/kaushik2613" target="_blank" rel="noopener noreferrer" class="project-github-btn">
+                            <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                            GitHub
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 4. Database & ETL -->
+                <div class="project-card">
+                    <div class="project-card-header">
+                        <h3 class="project-title">Database &amp; ETL with Databricks</h3>
+                        <span class="project-date">Apr – May 2025</span>
+                    </div>
+                    <div class="project-location">UTA | Arlington, TX</div>
+                    <ul class="project-bullets">
+                        <li>Managed MongoDB and MySQL databases for structured and unstructured data workflows.</li>
+                        <li>Built scalable ETL pipelines in Databricks for large-scale analytics processing.</li>
+                    </ul>
+                    <div class="project-footer">
+                        <div class="project-tags"><span class="tag">Databricks</span><span class="tag">MongoDB</span><span class="tag">MySQL</span><span class="tag">ETL Pipelines</span><span class="tag">Apache Spark</span></div>
+                        <a href="https://github.com/kaushik2613" target="_blank" rel="noopener noreferrer" class="project-github-btn">
+                            <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                            GitHub
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 5. Tutor-Student Website -->
+                <div class="project-card">
+                    <div class="project-card-header">
+                        <h3 class="project-title">Tutor–Student Website (Peertut)</h3>
+                        <span class="project-date">Apr – May 2025</span>
+                    </div>
+                    <div class="project-location">UTA | Arlington, TX</div>
+                    <ul class="project-bullets">
+                        <li>Designed and deployed a full-stack educational platform using HTML5, CSS, Node.js, and REST APIs.</li>
+                        <li>Developed responsive front-end and back-end features with cloud deployment.</li>
+                        <li>Integrated an AI chatbot for real-time user query resolution.</li>
+                    </ul>
+                    <div class="project-footer">
+                        <div class="project-tags"><span class="tag">Node.js</span><span class="tag">REST APIs</span><span class="tag">HTML5/CSS</span><span class="tag">Cloud Deploy</span><span class="tag">Chatbot</span></div>
+                        <a href="https://github.com/kaushik2613" target="_blank" rel="noopener noreferrer" class="project-github-btn">
+                            <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                            GitHub
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 6. Bitcoin Price Prediction -->
+                <div class="project-card">
+                    <div class="project-card-header">
+                        <h3 class="project-title">Bitcoin Price Prediction</h3>
+                        <span class="project-date">Jan – Jul 2024</span>
+                    </div>
+                    <div class="project-location">Bengaluru, India</div>
+                    <ul class="project-bullets">
+                        <li>Predicted Bitcoin prices using SVM and linear regression algorithms trained on 4 years of historical data.</li>
+                        <li>Achieved ~<strong style="color:var(--accent-secondary)">64% accuracy</strong> for 30-day price forecasting.</li>
+                    </ul>
+                    <div class="project-footer">
+                        <div class="project-tags"><span class="tag">SVM</span><span class="tag">Linear Regression</span><span class="tag">Python</span><span class="tag">Time Series</span><span class="tag">Scikit-learn</span></div>
+                        <a href="https://github.com/kaushik2613" target="_blank" rel="noopener noreferrer" class="project-github-btn">
+                            <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                            GitHub
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 7. Neural Networks -->
+                <div class="project-card">
+                    <div class="project-card-header">
+                        <h3 class="project-title">Neural Networks from Scratch</h3>
+                        <span class="project-date">UTA</span>
+                    </div>
+                    <div class="project-location">UTA | Arlington, TX</div>
+                    <ul class="project-bullets">
+                        <li>Built a custom neural network framework in Python to solve XOR and predict NYC taxi durations.</li>
+                        <li>Implemented ReLU, Sigmoid activations with early stopping and hyperparameter optimization.</li>
+                    </ul>
+                    <div class="project-footer">
+                        <div class="project-tags"><span class="tag">Gradient Descent</span><span class="tag">ReLU / Sigmoid</span><span class="tag">NumPy</span><span class="tag">Hyperparameter Tuning</span></div>
+                        <a href="https://github.com/kaushik2613" target="_blank" rel="noopener noreferrer" class="project-github-btn">
+                            <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                            GitHub
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 8. Linear Regression -->
+                <div class="project-card">
+                    <div class="project-card-header">
+                        <h3 class="project-title">Linear &amp; Logistic Regression</h3>
+                        <span class="project-date">UTA</span>
+                    </div>
+                    <div class="project-location">UTA | Arlington, TX</div>
+                    <ul class="project-bullets">
+                        <li>Built regression and classification models from scratch with gradient descent and L2 regularization.</li>
+                        <li>Evaluated on the Iris dataset with early stopping to prevent overfitting.</li>
+                    </ul>
+                    <div class="project-footer">
+                        <div class="project-tags"><span class="tag">Scikit-learn</span><span class="tag">Pandas</span><span class="tag">L2 Regularization</span><span class="tag">Logistic Regression</span></div>
+                        <a href="https://github.com/kaushik2613" target="_blank" rel="noopener noreferrer" class="project-github-btn">
+                            <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                            GitHub
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ WORK EXPERIENCE SECTION ============ -->
+    <section class="experience" id="experience">
+        <h2 class="section-title">Work Experience</h2>
+        <div class="exp-timeline">
+
+            <div class="exp-item">
+                <div class="exp-card">
+                    <div class="exp-header">
+                        <div class="exp-title">Assistant Manager</div>
+                        <span class="exp-date">Full-Time</span>
+                    </div>
+                    <div class="exp-company">Mahindra &amp; Mahindra Ltd</div>
+                    <ul class="exp-bullets">
+                        <li>Maintained and optimized spray robots for minimal downtime, ensuring consistent paint quality across production lines.</li>
+                        <li>Centralized and analyzed equipment data to identify patterns in recurring faults, reducing unplanned maintenance incidents.</li>
+                        <li>Managed inventory operations, streamlining procurement workflows and reducing material usage and costs by <strong style="color:var(--accent-secondary)">30%</strong>.</li>
+                    </ul>
+                    <div class="exp-tags">
+                        <span class="exp-tag">Robotics Operations</span>
+                        <span class="exp-tag">Data Analysis</span>
+                        <span class="exp-tag">Inventory Management</span>
+                        <span class="exp-tag">Process Optimization</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exp-item">
+                <div class="exp-card">
+                    <div class="exp-header">
+                        <div class="exp-title">VLSI Internship</div>
+                        <span class="exp-date">2-Month Internship</span>
+                    </div>
+                    <div class="exp-company">APSIS Solutions (IIT Bombay)</div>
+                    <ul class="exp-bullets">
+                        <li>Completed an intensive FPGA internship, successfully delivering three end-to-end Verilog hardware projects on FPGA boards.</li>
+                        <li>Modeled digital circuit dataflow and behavioral logic using Icarus Verilog simulation and Xilinx synthesis tools.</li>
+                    </ul>
+                    <div class="exp-tags">
+                        <span class="exp-tag">Verilog / HDL</span>
+                        <span class="exp-tag">FPGA Design</span>
+                        <span class="exp-tag">Icarus Verilog</span>
+                        <span class="exp-tag">Xilinx</span>
+                        <span class="exp-tag">Hardware Modeling</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ============ PUBLICATIONS SECTION ============ -->
+    <section class="publications" id="publications">
+        <div class="publications-inner">
+            <h2 class="section-title">Publications</h2>
+
+            <div class="pub-card">
+                <div class="pub-card-header">
+                    <div class="pub-title">A Novel Dynamic Authentication System using Eye Blinks</div>
+                    <span class="pub-date">Jan – Jul 2024</span>
+                </div>
+                <div class="pub-location">📍 Bengaluru, India</div>
+                <span class="pub-venue">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                    Paper Presentation — IEEE Research Paper
+                </span>
+                <ul class="pub-bullets">
+                    <li>Processed EOG signals using Arduino, applying filtering, normalization, and feature extraction for blink detection.</li>
+                    <li>Tested multiple ML models, achieving <strong style="color:var(--accent-secondary)">80% accuracy</strong> across <strong style="color:var(--accent-secondary)">60+ users</strong>.</li>
+                    <li>Outperformed traditional facial recognition systems; ensured successful real-world deployment.</li>
+                </ul>
+                <div class="pub-footer">
+                    <span class="pub-tag">EOG Signal Processing</span>
+                    <span class="pub-tag">Arduino</span>
+                    <span class="pub-tag">Machine Learning</span>
+                    <span class="pub-tag">Biometric Authentication</span>
+                    <span class="pub-tag">IEEE</span>
+                    <span class="pub-tag">Feature Extraction</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="skills" id="skills">
+        <h2 class="section-title">Skills &amp; Expertise</h2>
+        <div class="skills-container">
+
+            <!-- Languages & Databases -->
+            <div class="skills-category">
+                <h3 class="category-title">🖥️ Languages &amp; Databases</h3>
+                <div class="skills-grid">
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">Python</span><span class="skill-level">90%</span></div><div class="skill-bar"><div class="skill-progress" data-level="90"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">R Programming</span><span class="skill-level">85%</span></div><div class="skill-bar"><div class="skill-progress" data-level="85"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">SQL</span><span class="skill-level">85%</span></div><div class="skill-bar"><div class="skill-progress" data-level="85"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">Java</span><span class="skill-level">70%</span></div><div class="skill-bar"><div class="skill-progress" data-level="70"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">MATLAB</span><span class="skill-level">75%</span></div><div class="skill-bar"><div class="skill-progress" data-level="75"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">MySQL &amp; PostgreSQL</span><span class="skill-level">80%</span></div><div class="skill-bar"><div class="skill-progress" data-level="80"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">MongoDB</span><span class="skill-level">80%</span></div><div class="skill-bar"><div class="skill-progress" data-level="80"></div></div></div>
+                </div>
+            </div>
+
+            <!-- AI & Machine Learning -->
+            <div class="skills-category">
+                <h3 class="category-title">🤖 AI &amp; Machine Learning</h3>
+                <div class="skills-grid">
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">Scikit-learn</span><span class="skill-level">85%</span></div><div class="skill-bar"><div class="skill-progress" data-level="85"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">TensorFlow / Keras</span><span class="skill-level">80%</span></div><div class="skill-bar"><div class="skill-progress" data-level="80"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">CNN &amp; ResNet (Deep Learning)</span><span class="skill-level">80%</span></div><div class="skill-bar"><div class="skill-progress" data-level="80"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">RNN &amp; LSTM</span><span class="skill-level">75%</span></div><div class="skill-bar"><div class="skill-progress" data-level="75"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">Random Forest &amp; PCA</span><span class="skill-level">80%</span></div><div class="skill-bar"><div class="skill-progress" data-level="80"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">Q-Learning &amp; Deep Q-Learning</span><span class="skill-level">75%</span></div><div class="skill-bar"><div class="skill-progress" data-level="75"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">NumPy &amp; Pandas</span><span class="skill-level">85%</span></div><div class="skill-bar"><div class="skill-progress" data-level="85"></div></div></div>
+                </div>
+            </div>
+
+            <!-- Data Visualisation -->
+            <div class="skills-category">
+                <h3 class="category-title">📊 Data Visualisation</h3>
+                <div class="skills-grid">
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">Tableau</span><span class="skill-level">85%</span></div><div class="skill-bar"><div class="skill-progress" data-level="85"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">Power BI</span><span class="skill-level">80%</span></div><div class="skill-bar"><div class="skill-progress" data-level="80"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">Seaborn &amp; Matplotlib</span><span class="skill-level">85%</span></div><div class="skill-bar"><div class="skill-progress" data-level="85"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">ggplot2 (R)</span><span class="skill-level">80%</span></div><div class="skill-bar"><div class="skill-progress" data-level="80"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">Plotly Dash</span><span class="skill-level">75%</span></div><div class="skill-bar"><div class="skill-progress" data-level="75"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">Excel (VBA &amp; Macros)</span><span class="skill-level">80%</span></div><div class="skill-bar"><div class="skill-progress" data-level="80"></div></div></div>
+                </div>
+            </div>
+
+            <!-- AWS Cloud (from certifications) -->
+            <div class="skills-category">
+                <h3 class="category-title">☁️ AWS Cloud</h3>
+                <div class="skills-grid">
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">AWS SageMaker</span><span class="skill-level">80%</span></div><div class="skill-bar"><div class="skill-progress" data-level="80"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">EC2, S3 &amp; Lambda</span><span class="skill-level">85%</span></div><div class="skill-bar"><div class="skill-progress" data-level="85"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">IAM &amp; Cloud Security</span><span class="skill-level">85%</span></div><div class="skill-bar"><div class="skill-progress" data-level="85"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">Amazon Bedrock &amp; Generative AI</span><span class="skill-level">75%</span></div><div class="skill-bar"><div class="skill-progress" data-level="75"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">VPC &amp; Cloud Networking</span><span class="skill-level">80%</span></div><div class="skill-bar"><div class="skill-progress" data-level="80"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">RDS, DynamoDB &amp; Serverless</span><span class="skill-level">75%</span></div><div class="skill-bar"><div class="skill-progress" data-level="75"></div></div></div>
+                </div>
+            </div>
+
+            <!-- Oracle Cloud (from certifications) -->
+            <div class="skills-category">
+                <h3 class="category-title">🔴 Oracle Cloud Infrastructure</h3>
+                <div class="skills-grid">
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">OCI Data Science &amp; MLOps</span><span class="skill-level">80%</span></div><div class="skill-bar"><div class="skill-progress" data-level="80"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">Oracle Analytics Cloud (OAC)</span><span class="skill-level">80%</span></div><div class="skill-bar"><div class="skill-progress" data-level="80"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">OCI DevOps &amp; CI/CD Pipelines</span><span class="skill-level">75%</span></div><div class="skill-bar"><div class="skill-progress" data-level="75"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">Kubernetes &amp; Container Registry</span><span class="skill-level">70%</span></div><div class="skill-bar"><div class="skill-progress" data-level="70"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">VCN Design &amp; Network Security</span><span class="skill-level">75%</span></div><div class="skill-bar"><div class="skill-progress" data-level="75"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">OCI Vision AI &amp; NLP Services</span><span class="skill-level">70%</span></div><div class="skill-bar"><div class="skill-progress" data-level="70"></div></div></div>
+                </div>
+            </div>
+
+            <!-- Databricks & Data Engineering (from certifications) -->
+            <div class="skills-category">
+                <h3 class="category-title">⬡ Databricks &amp; Data Engineering</h3>
+                <div class="skills-grid">
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">Apache Spark &amp; Delta Lake</span><span class="skill-level">80%</span></div><div class="skill-bar"><div class="skill-progress" data-level="80"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">Databricks ETL Pipelines</span><span class="skill-level">80%</span></div><div class="skill-bar"><div class="skill-progress" data-level="80"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">LLM Agents &amp; RAG Pipelines</span><span class="skill-level">70%</span></div><div class="skill-bar"><div class="skill-progress" data-level="70"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">MLflow &amp; Model Tracking</span><span class="skill-level">75%</span></div><div class="skill-bar"><div class="skill-progress" data-level="75"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">Unity Catalog &amp; Data Governance</span><span class="skill-level">70%</span></div><div class="skill-bar"><div class="skill-progress" data-level="70"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">Azure Data Lake &amp; Cluster Mgmt</span><span class="skill-level">70%</span></div><div class="skill-bar"><div class="skill-progress" data-level="70"></div></div></div>
+                </div>
+            </div>
+
+            <!-- Cloud Tools & DevOps -->
+            <div class="skills-category">
+                <h3 class="category-title">🛠️ Cloud Tools &amp; DevOps</h3>
+                <div class="skills-grid">
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">Docker</span><span class="skill-level">75%</span></div><div class="skill-bar"><div class="skill-progress" data-level="75"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">Git &amp; Version Control</span><span class="skill-level">85%</span></div><div class="skill-bar"><div class="skill-progress" data-level="85"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">Jupyter Notebooks</span><span class="skill-level">90%</span></div><div class="skill-bar"><div class="skill-progress" data-level="90"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">Infrastructure as Code (IaC)</span><span class="skill-level">70%</span></div><div class="skill-bar"><div class="skill-progress" data-level="70"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">Prompt Engineering</span><span class="skill-level">75%</span></div><div class="skill-bar"><div class="skill-progress" data-level="75"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">REST APIs &amp; Node.js</span><span class="skill-level">75%</span></div><div class="skill-bar"><div class="skill-progress" data-level="75"></div></div></div>
+                </div>
+            </div>
+
+            <!-- Electronics & Hardware -->
+            <div class="skills-category">
+                <h3 class="category-title">⚡ Electronics &amp; Hardware</h3>
+                <div class="skills-grid">
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">Verilog / HDL</span><span class="skill-level">80%</span></div><div class="skill-bar"><div class="skill-progress" data-level="80"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">FPGA Design &amp; RTL Coding</span><span class="skill-level">75%</span></div><div class="skill-bar"><div class="skill-progress" data-level="75"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">Embedded Systems &amp; Microcontrollers</span><span class="skill-level">75%</span></div><div class="skill-bar"><div class="skill-progress" data-level="75"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">VLSI Design</span><span class="skill-level">75%</span></div><div class="skill-bar"><div class="skill-progress" data-level="75"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">Arduino &amp; EOG Signal Processing</span><span class="skill-level">70%</span></div><div class="skill-bar"><div class="skill-progress" data-level="70"></div></div></div>
+                    <div class="skill-card"><div class="skill-header"><span class="skill-name">Xilinx &amp; Icarus Verilog Tools</span><span class="skill-level">70%</span></div><div class="skill-bar"><div class="skill-progress" data-level="70"></div></div></div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ============ CERTIFICATES SECTION ============ -->
+    <section class="certificates" id="certificates">
+        <div class="certificates-inner">
+            <h2 class="section-title">Certifications</h2>
+            <div class="certs-summary">
+                <div class="cert-stat"><div class="cert-stat-value">13</div><div class="cert-stat-label">Total Certifications</div></div>
+                <div class="cert-stat"><div class="cert-stat-value">5</div><div class="cert-stat-label">Platforms</div></div>
+                <div class="cert-stat"><div class="cert-stat-value">7</div><div class="cert-stat-label">Cloud &amp; AI Certs</div></div>
+            </div>
+            <div class="cert-filter-tabs">
+                <button class="cert-tab active" data-filter="all">All</button>
+                <button class="cert-tab" data-filter="aws">AWS</button>
+                <button class="cert-tab" data-filter="oracle">Oracle</button>
+                <button class="cert-tab" data-filter="databricks">Databricks</button>
+                <button class="cert-tab" data-filter="udemy">Udemy</button>
+                <button class="cert-tab" data-filter="microsoft">Microsoft</button>
+            </div>
+            <div class="certificates-grid">
+                <div class="cert-card" data-category="aws">
+                    <div class="cert-card-top">
+                        <img class="cert-badge-img" src="Badges\aws-certified-cloud-practitioner.png" alt="AWS Cloud Practitioner" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                        <div class="cert-badge-icon aws" style="display:none">☁️</div>
+                        <div class="cert-info"><div class="cert-title">AWS Certified Cloud Practitioner</div><div class="cert-issuer">Amazon Web Services</div></div>
+                        <div class="cert-verified"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"></polyline></svg></div>
+                    </div>
+                    <div class="cert-skills"><span class="cert-skill-tag aws">Cloud Fundamentals</span><span class="cert-skill-tag aws">AWS IAM</span><span class="cert-skill-tag aws">EC2 &amp; S3</span><span class="cert-skill-tag aws">Cloud Security</span><span class="cert-skill-tag aws">Billing &amp; Pricing</span></div>
+                    <div class="cert-card-footer">
+                        <a href="Certifications/AWS/AWS Certified Cloud Practitioner certificate.pdf" target="_blank" rel="noopener noreferrer" class="cert-pdf-btn" onclick="event.stopPropagation()"><svg viewBox="0 0 12 12"><path d="M2 1h6l2 2v8H2z"></path><line x1="4" y1="5" x2="8" y2="5"></line><line x1="4" y1="7" x2="8" y2="7"></line></svg>View Certificate</a>
+                        <a href="https://www.credly.com/badges/89379a5b-f4e2-4169-8956-7551ca5a05d9/public_url" target="_blank" rel="noopener noreferrer" class="cert-verify-btn" onclick="event.stopPropagation()"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"></polyline></svg>Verify on Credly</a>
+                    </div>
+                </div>
+                <div class="cert-card" data-category="aws">
+                    <div class="cert-card-top">
+                        <img class="cert-badge-img" src="Badges\AWS_AI.png" alt="AWS AI Practitioner" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                        <div class="cert-badge-icon aws" style="display:none">🤖</div>
+                        <div class="cert-info"><div class="cert-title">AWS Certified AI Practitioner</div><div class="cert-issuer">Amazon Web Services</div></div>
+                        <div class="cert-verified"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"></polyline></svg></div>
+                    </div>
+                    <div class="cert-skills"><span class="cert-skill-tag aws">Generative AI</span><span class="cert-skill-tag aws">Amazon Bedrock</span><span class="cert-skill-tag aws">SageMaker</span><span class="cert-skill-tag aws">ML Fundamentals</span><span class="cert-skill-tag aws">Responsible AI</span></div>
+                    <div class="cert-card-footer">
+                        <a href="Certifications/AWS/AWS Certified AI Practitioner certificate.pdf" target="_blank" rel="noopener noreferrer" class="cert-pdf-btn" onclick="event.stopPropagation()"><svg viewBox="0 0 12 12"><path d="M2 1h6l2 2v8H2z"></path><line x1="4" y1="5" x2="8" y2="5"></line><line x1="4" y1="7" x2="8" y2="7"></line></svg>View Certificate</a>
+                        <a href="https://www.credly.com/badges/ec3f8f1e-ad85-4923-8c76-bca9776f7c90" target="_blank" rel="noopener noreferrer" class="cert-verify-btn" onclick="event.stopPropagation()"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"></polyline></svg>Verify on Credly</a>
+                    </div>
+                </div>
+                <div class="cert-card" data-category="oracle">
+                    <div class="cert-card-top">
+                        <img class="cert-badge-img" src="Badges\OCIEA25OCP.jpg" alt="Oracle Analytics Cloud" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                        <div class="cert-badge-icon oracle" style="display:none">📊</div>
+                        <div class="cert-info"><div class="cert-title">Oracle Analytics Cloud 2025 Professional</div><div class="cert-issuer">Oracle</div></div>
+                        <div class="cert-verified"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"></polyline></svg></div>
+                    </div>
+                    <div class="cert-skills"><span class="cert-skill-tag oracle">Data Visualization</span><span class="cert-skill-tag oracle">OAC Dashboards</span><span class="cert-skill-tag oracle">ML in OAC</span><span class="cert-skill-tag oracle">Data Flows</span><span class="cert-skill-tag oracle">Analytics Admin</span></div>
+                    <div class="cert-card-footer">
+                        <a href="Certifications/Oracle/Oracle_Cloud.pdf" target="_blank" rel="noopener noreferrer" class="cert-pdf-btn" onclick="event.stopPropagation()"><svg viewBox="0 0 12 12"><path d="M2 1h6l2 2v8H2z"></path><line x1="4" y1="5" x2="8" y2="5"></line><line x1="4" y1="7" x2="8" y2="7"></line></svg>View Certificate</a>
+                        <a href="https://catalog-education.oracle.com/pls/certview/sharebadge?id=8DDCD359CCEB83DB6036C26510C548687FF42D327710888A7797F3ECF1A5C47B" target="_blank" rel="noopener noreferrer" class="cert-verify-btn" onclick="event.stopPropagation()"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"></polyline></svg>Verify on Credly</a>
+                    </div>
+                </div>
+                <div class="cert-card" data-category="oracle">
+                    <div class="cert-card-top">
+                        <img class="cert-badge-img" src="Badges\OCI25DSOCP.jpg" alt="Oracle Data Science" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                        <div class="cert-badge-icon oracle" style="display:none">🔬</div>
+                        <div class="cert-info"><div class="cert-title">Oracle Cloud Infrastructure 2025 Data Science Professional</div><div class="cert-issuer">Oracle</div></div>
+                        <div class="cert-verified"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"></polyline></svg></div>
+                    </div>
+                    <div class="cert-skills"><span class="cert-skill-tag oracle">OCI Data Science</span><span class="cert-skill-tag oracle">Model Training</span><span class="cert-skill-tag oracle">Feature Engineering</span><span class="cert-skill-tag oracle">Python on OCI</span><span class="cert-skill-tag oracle">MLOps</span></div>
+                    <div class="cert-card-footer">
+                        <a href="Certifications/Oracle/Oracle_Datascience.pdf" target="_blank" rel="noopener noreferrer" class="cert-pdf-btn" onclick="event.stopPropagation()"><svg viewBox="0 0 12 12"><path d="M2 1h6l2 2v8H2z"></path><line x1="4" y1="5" x2="8" y2="5"></line><line x1="4" y1="7" x2="8" y2="7"></line></svg>View Certificate</a>
+                        <a href="https://catalog-education.oracle.com/pls/certview/sharebadge?id=458381550AF48C826A963B2E429B34207FAA4E5B981331E6B9335C8AF1367D24" target="_blank" rel="noopener noreferrer" class="cert-verify-btn" onclick="event.stopPropagation()"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"></polyline></svg>Verify on Credly</a>
+                    </div>
+                </div>
+                <div class="cert-card" data-category="oracle">
+                    <div class="cert-card-top">
+                        <img class="cert-badge-img" src="Badges\OCI25AICFA.jpeg" alt="Oracle AI Foundations" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                        <div class="cert-badge-icon oracle" style="display:none">🧠</div>
+                        <div class="cert-info"><div class="cert-title">Oracle Cloud Infrastructure 2025 AI Foundations Associate</div><div class="cert-issuer">Oracle</div></div>
+                        <div class="cert-verified"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"></polyline></svg></div>
+                    </div>
+                    <div class="cert-skills"><span class="cert-skill-tag oracle">AI Fundamentals</span><span class="cert-skill-tag oracle">OCI AI Services</span><span class="cert-skill-tag oracle">Natural Language</span><span class="cert-skill-tag oracle">Vision AI</span><span class="cert-skill-tag oracle">Generative AI</span></div>
+                    <div class="cert-card-footer">
+                        <a href="Certifications/Oracle/Oracle_AI.pdf" target="_blank" rel="noopener noreferrer" class="cert-pdf-btn" onclick="event.stopPropagation()"><svg viewBox="0 0 12 12"><path d="M2 1h6l2 2v8H2z"></path><line x1="4" y1="5" x2="8" y2="5"></line><line x1="4" y1="7" x2="8" y2="7"></line></svg>View Certificate</a>
+                        <a href="https://catalog-education.oracle.com/pls/certview/sharebadge?id=3C0ADE705A4C22A811B94458B558948E0F1DBC1425835648C4AD9AF82DA8119B" target="_blank" rel="noopener noreferrer" class="cert-verify-btn" onclick="event.stopPropagation()"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"></polyline></svg>Verify on Credly</a>
+                    </div>
+                </div>
+                <div class="cert-card" data-category="oracle">
+                    <div class="cert-card-top">
+                        <img class="cert-badge-img" src="Badges\OCI25NWOCP.jpg" alt="Oracle Networking" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                        <div class="cert-badge-icon oracle" style="display:none">🌐</div>
+                        <div class="cert-info"><div class="cert-title">Oracle Cloud Infrastructure 2025 Networking Professional</div><div class="cert-issuer">Oracle</div></div>
+                        <div class="cert-verified"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"></polyline></svg></div>
+                    </div>
+                    <div class="cert-skills"><span class="cert-skill-tag oracle">VCN Design</span><span class="cert-skill-tag oracle">Load Balancing</span><span class="cert-skill-tag oracle">DNS &amp; Traffic Mgmt</span><span class="cert-skill-tag oracle">Network Security</span><span class="cert-skill-tag oracle">FastConnect</span></div>
+                    <div class="cert-card-footer">
+                        <a href="Certifications/Oracle/Oracle_Networking.pdf" target="_blank" rel="noopener noreferrer" class="cert-pdf-btn" onclick="event.stopPropagation()"><svg viewBox="0 0 12 12"><path d="M2 1h6l2 2v8H2z"></path><line x1="4" y1="5" x2="8" y2="5"></line><line x1="4" y1="7" x2="8" y2="7"></line></svg>View Certificate</a>
+                        <a href="https://catalog-education.oracle.com/pls/certview/sharebadge?id=C3C24A33BE69CE802A1665E4A835E531C65CBBA03ED8B6E9E9F8B617A0A355D6" target="_blank" rel="noopener noreferrer" class="cert-verify-btn" onclick="event.stopPropagation()"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"></polyline></svg>Verify on Credly</a>
+                    </div>
+                </div>
+                <div class="cert-card" data-category="oracle">
+                    <div class="cert-card-top">
+                        <img class="cert-badge-img" src="Badges\OCI25DOPOCP.jpg" alt="Oracle DevOps" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                        <div class="cert-badge-icon oracle" style="display:none">⚙️</div>
+                        <div class="cert-info"><div class="cert-title">Oracle Cloud Infrastructure 2025 DevOps Professional</div><div class="cert-issuer">Oracle</div></div>
+                        <div class="cert-verified"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"></polyline></svg></div>
+                    </div>
+                    <div class="cert-skills"><span class="cert-skill-tag oracle">CI/CD Pipelines</span><span class="cert-skill-tag oracle">OCI DevOps</span><span class="cert-skill-tag oracle">Kubernetes</span><span class="cert-skill-tag oracle">Artifact Registry</span><span class="cert-skill-tag oracle">Infrastructure as Code</span></div>
+                    <div class="cert-card-footer">
+                        <a href="Certifications/Oracle/Oracle_Devops.pdf" target="_blank" rel="noopener noreferrer" class="cert-pdf-btn" onclick="event.stopPropagation()"><svg viewBox="0 0 12 12"><path d="M2 1h6l2 2v8H2z"></path><line x1="4" y1="5" x2="8" y2="5"></line><line x1="4" y1="7" x2="8" y2="7"></line></svg>View Certificate</a>
+                        <a href="https://catalog-education.oracle.com/pls/certview/sharebadge?id=458381550AF48C826A963B2E429B3420812D8569EDE866127B9AD33F3125D161" target="_blank" rel="noopener noreferrer" class="cert-verify-btn" onclick="event.stopPropagation()"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"></polyline></svg>Verify on Credly</a>
+                    </div>
+                </div>
+                <div class="cert-card" data-category="udemy">
+                    <div class="cert-card-top">
+                        <img class="cert-badge-img" src="Badges\U_SM_SAA.png" alt="AWS Solutions Architect" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                        <div class="cert-badge-icon udemy" style="display:none">☁️</div>
+                        <div class="cert-info"><div class="cert-title">AWS Certified Solutions Architect Associate 2025</div><div class="cert-issuer">Udemy</div></div>
+                        <div class="cert-verified"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"></polyline></svg></div>
+                    </div>
+                    <div class="cert-skills"><span class="cert-skill-tag aws">Solution Design</span><span class="cert-skill-tag aws">High Availability</span><span class="cert-skill-tag aws">RDS &amp; DynamoDB</span><span class="cert-skill-tag aws">Lambda &amp; Serverless</span><span class="cert-skill-tag aws">Cost Optimization</span></div>
+                    <div class="cert-card-footer">
+                        <a href="Certifications/Udemy/SM_SAA.pdf" target="_blank" rel="noopener noreferrer" class="cert-pdf-btn" onclick="event.stopPropagation()"><svg viewBox="0 0 12 12"><path d="M2 1h6l2 2v8H2z"></path><line x1="4" y1="5" x2="8" y2="5"></line><line x1="4" y1="7" x2="8" y2="7"></line></svg>View Certificate</a>
+                        <a href="https://www.udemy.com/certificate/UC-7dba6029-d584-4a60-a211-ed07e0cc47fb/" target="_blank" rel="noopener noreferrer" class="cert-verify-btn" onclick="event.stopPropagation()"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"></polyline></svg>Verify on Udemy</a>
+                    </div>
+                </div>
+                <div class="cert-card" data-category="databricks">
+                    <div class="cert-card-top">
+                        <img class="cert-badge-img" src="Badges\DB_DF.png" alt="Databricks Fundamentals" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                        <div class="cert-badge-icon databricks" style="display:none">⬡</div>
+                        <div class="cert-info"><div class="cert-title">Academy Accreditation — Databricks Fundamentals</div><div class="cert-issuer">Databricks</div></div>
+                        <div class="cert-verified"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"></polyline></svg></div>
+                    </div>
+                    <div class="cert-skills"><span class="cert-skill-tag db">Apache Spark</span><span class="cert-skill-tag db">Delta Lake</span><span class="cert-skill-tag db">Notebooks</span><span class="cert-skill-tag db">Data Engineering</span><span class="cert-skill-tag db">Lakehouse</span></div>
+                    <div class="cert-card-footer">
+                        <a href="Certifications/DataBricks/DB_fud.png" target="_blank" rel="noopener noreferrer" class="cert-pdf-btn" onclick="event.stopPropagation()"><svg viewBox="0 0 12 12"><path d="M2 1h6l2 2v8H2z"></path><line x1="4" y1="5" x2="8" y2="5"></line><line x1="4" y1="7" x2="8" y2="7"></line></svg>View Certificate</a>
+                        <a href="https://credentials.databricks.com/a8f6c602-a11d-430e-841b-c214a42d5294#acc.ARWnheSX" target="_blank" rel="noopener noreferrer" class="cert-verify-btn" onclick="event.stopPropagation()"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"></polyline></svg>Verify on Credly</a>
+                    </div>
+                </div>
+                <div class="cert-card" data-category="databricks">
+                    <div class="cert-card-top">
+                        <img class="cert-badge-img" src="Badges\DB_AIF.png" alt="AI Agent Fundamentals" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                        <div class="cert-badge-icon databricks" style="display:none">🤖</div>
+                        <div class="cert-info"><div class="cert-title">Academy Accreditation — AI Agent Fundamentals</div><div class="cert-issuer">Databricks</div></div>
+                        <div class="cert-verified"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"></polyline></svg></div>
+                    </div>
+                    <div class="cert-skills"><span class="cert-skill-tag db">LLM Agents</span><span class="cert-skill-tag db">RAG Pipelines</span><span class="cert-skill-tag db">Vector Search</span><span class="cert-skill-tag gen">Prompt Engineering</span><span class="cert-skill-tag db">MLflow</span></div>
+                    <div class="cert-card-footer">
+                        <a href="Certifications/DataBricks/DB_AI.png" target="_blank" rel="noopener noreferrer" class="cert-pdf-btn" onclick="event.stopPropagation()"><svg viewBox="0 0 12 12"><path d="M2 1h6l2 2v8H2z"></path><line x1="4" y1="5" x2="8" y2="5"></line><line x1="4" y1="7" x2="8" y2="7"></line></svg>View Certificate</a>
+                        <a href="https://credentials.databricks.com/dbacaab8-dcdb-427b-a178-96d8482b7717#acc.0EhBjqya" target="_blank" rel="noopener noreferrer" class="cert-verify-btn" onclick="event.stopPropagation()"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"></polyline></svg>Verify on Credly</a>
+                    </div>
+                </div>
+                <div class="cert-card" data-category="databricks">
+                    <div class="cert-card-top">
+                        <img class="cert-badge-img" src="Badges\Screenshot 2026-02-28 213735.png" alt="Azure Databricks Architect" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                        <div class="cert-badge-icon databricks" style="display:none">🏗️</div>
+                        <div class="cert-info"><div class="cert-title">Academy Accreditation — Azure Databricks Platform Architect</div><div class="cert-issuer">Databricks</div></div>
+                        <div class="cert-verified"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"></polyline></svg></div>
+                    </div>
+                    <div class="cert-skills"><span class="cert-skill-tag db">Azure Databricks</span><span class="cert-skill-tag db">Unity Catalog</span><span class="cert-skill-tag ms">Azure Data Lake</span><span class="cert-skill-tag db">Cluster Management</span><span class="cert-skill-tag db">Data Governance</span></div>
+                    <div class="cert-card-footer">
+                        <a href="Certifications/DataBricks/DB_Azure.png" target="_blank" rel="noopener noreferrer" class="cert-pdf-btn" onclick="event.stopPropagation()"><svg viewBox="0 0 12 12"><path d="M2 1h6l2 2v8H2z"></path><line x1="4" y1="5" x2="8" y2="5"></line><line x1="4" y1="7" x2="8" y2="7"></line></svg>View Certificate</a>
+                        <a href="https://credentials.databricks.com/fa28eab8-573a-4b80-acfc-7d2425ffde51#acc.90FL5QoR" target="_blank" rel="noopener noreferrer" class="cert-verify-btn" onclick="event.stopPropagation()"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"></polyline></svg>Verify on Credly</a>
+                    </div>
+                </div>
+                <div class="cert-card" data-category="microsoft">
+                    <div class="cert-card-top">
+                        <img class="cert-badge-img" src="Badges\UD_Excel.png" alt="Microsoft Excel" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                        <div class="cert-badge-icon microsoft" style="display:none">📊</div>
+                        <div class="cert-info"><div class="cert-title">Microsoft Excel — Excel from Beginner to Advanced</div><div class="cert-issuer">Microsoft / Udemy</div></div>
+                        <div class="cert-verified"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"></polyline></svg></div>
+                    </div>
+                    <div class="cert-skills"><span class="cert-skill-tag ms">PivotTables</span><span class="cert-skill-tag ms">VLOOKUP &amp; INDEX</span><span class="cert-skill-tag ms">Power Query</span><span class="cert-skill-tag ms">Macros &amp; VBA</span><span class="cert-skill-tag ms">Data Analysis</span></div>
+                    <div class="cert-card-footer">
+                        <a href="Certifications/Udemy/MS_Excel.pdf" target="_blank" rel="noopener noreferrer" class="cert-pdf-btn" onclick="event.stopPropagation()"><svg viewBox="0 0 12 12"><path d="M2 1h6l2 2v8H2z"></path><line x1="4" y1="5" x2="8" y2="5"></line><line x1="4" y1="7" x2="8" y2="7"></line></svg>View Certificate</a>
+                        <a href="https://www.udemy.com/certificate/UC-2706941f-5935-4ca3-afe1-778fc55437a0/" target="_blank" rel="noopener noreferrer" class="cert-verify-btn" onclick="event.stopPropagation()"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"></polyline></svg>Verify on Udemy</a>
+                    </div>
+                </div>
+                <div class="cert-card" data-category="udemy">
+                    <div class="cert-card-top">
+                        <img class="cert-badge-img" src="Badges\UD_Python.png" alt="Python Bootcamp" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                        <div class="cert-badge-icon udemy" style="display:none">🐍</div>
+                        <div class="cert-info"><div class="cert-title">100 Days of Code: The Complete Python Pro Bootcamp 2023</div><div class="cert-issuer">Udemy</div></div>
+                        <div class="cert-verified"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"></polyline></svg></div>
+                    </div>
+                    <div class="cert-skills"><span class="cert-skill-tag py">Python 3</span><span class="cert-skill-tag py">OOP</span><span class="cert-skill-tag py">APIs &amp; Web Scraping</span><span class="cert-skill-tag py">Data Structures</span><span class="cert-skill-tag py">Automation</span></div>
+                    <div class="cert-card-footer">
+                        <a href="#" target="_blank" rel="noopener noreferrer" class="cert-pdf-btn" onclick="event.stopPropagation()"><svg viewBox="0 0 12 12"><path d="M2 1h6l2 2v8H2z"></path><line x1="4" y1="5" x2="8" y2="5"></line><line x1="4" y1="7" x2="8" y2="7"></line></svg>View Certificate</a>
+                        <a href="YOUR_UDEMY_LINK_HERE" target="_blank" rel="noopener noreferrer" class="cert-verify-btn" onclick="event.stopPropagation()"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"></polyline></svg>Verify on Udemy</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <h2 class="section-title">Get In Touch</h2>
+        <div class="contact-container">
+            <div class="contact-card">
+                <p class="contact-text">Interested in collaborating on AI-powered projects or discussing opportunities? Feel free to reach out!</p>
+                <a href="mailto:kaishik.budur@gmail.com" class="contact-email">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    <span>kaishik.budur@gmail.com</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-links">
+            <a href="https://github.com/kaushik2613" target="_blank" rel="noopener noreferrer" class="footer-link">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                GitHub
+            </a>
+            <a href="https://www.linkedin.com/in/budur-kaushik-407014191/" target="_blank" rel="noopener noreferrer" class="footer-link">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                LinkedIn
+            </a>
+        </div>
+        <p class="footer-text">&copy; 2025 Kaushik Budur. All rights reserved.</p>
+    </footer>
+
+    <button class="scroll-top" id="scrollTopBtn" aria-label="Scroll to top">↑</button>
+
+    <script>
+        class TypingEffect {
+            constructor(elementSelector, text, speed = 50) {
+                this.element = document.querySelector(elementSelector);
+                this.text = text; this.speed = speed; this.index = 0;
+                this.init();
+            }
+            init() { this.element.innerHTML = ''; this.type(); }
+            type() {
+                if (this.index < this.text.length) {
+                    this.element.innerHTML = this.text.substring(0, this.index + 1);
+                    if (this.index < this.text.length - 1) {
+                        const cursor = document.createElement('span');
+                        cursor.className = 'cursor';
+                        this.element.appendChild(cursor);
+                    }
+                    this.index++;
+                    setTimeout(() => this.type(), this.speed);
+                } else { this.element.innerHTML = this.text; }
+            }
+        }
+
+        class ScrollAnimationObserver {
+            constructor() {
+                this.observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); this.observer.unobserve(entry.target); } });
+                }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+                document.querySelectorAll('.about, .education, .projects, .experience, .publications, .skills, .certificates, .contact').forEach(el => this.observer.observe(el));
+            }
+        }
+
+        class ParticleAnimation {
+            constructor(canvasId) {
+                this.canvas = document.getElementById(canvasId);
+                if (!this.canvas) return;
+                this.ctx = this.canvas.getContext('2d');
+                this.particles = [];
+                this.resizeCanvas();
+                this.createParticles();
+                this.animate();
+                window.addEventListener('resize', () => this.resizeCanvas());
+            }
+            resizeCanvas() { this.canvas.width = window.innerWidth; this.canvas.height = window.innerHeight; }
+            createParticles() { this.particles = []; for (let i = 0; i < 50; i++) this.particles.push(new Particle(this.canvas)); }
+            animate() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                this.particles.forEach(p => { p.update(); p.draw(this.ctx); });
+                this.particles.forEach((pA, iA) => {
+                    this.particles.slice(iA + 1).forEach(pB => {
+                        const dx = pA.x - pB.x, dy = pA.y - pB.y, dist = Math.sqrt(dx*dx + dy*dy);
+                        if (dist < 150) { this.ctx.strokeStyle = `rgba(99,102,241,${0.15*(1-dist/150)})`; this.ctx.lineWidth = 0.5; this.ctx.beginPath(); this.ctx.moveTo(pA.x, pA.y); this.ctx.lineTo(pB.x, pB.y); this.ctx.stroke(); }
+                    });
+                });
+                requestAnimationFrame(() => this.animate());
+            }
+        }
+
+        class Particle {
+            constructor(canvas) { this.canvas = canvas; this.x = Math.random()*canvas.width; this.y = Math.random()*canvas.height; this.size = Math.random()*2+1; this.speedX = Math.random()*0.5-0.25; this.speedY = Math.random()*0.5-0.25; this.opacity = Math.random()*0.5+0.2; }
+            update() { this.x += this.speedX; this.y += this.speedY; if (this.x > this.canvas.width) this.x = 0; if (this.x < 0) this.x = this.canvas.width; if (this.y > this.canvas.height) this.y = 0; if (this.y < 0) this.y = this.canvas.height; }
+            draw(ctx) { ctx.fillStyle = `rgba(99,102,241,${this.opacity})`; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fill(); }
+        }
+
+        class ScrollToTop {
+            constructor(buttonId) { this.button = document.getElementById(buttonId); window.addEventListener('scroll', () => this.button.classList.toggle('visible', window.pageYOffset > 300)); this.button.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' })); }
+        }
+
+        class SkillProgressBars {
+            constructor() {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => { if (entry.isIntersecting) { entry.target.style.width = entry.target.getAttribute('data-level') + '%'; observer.unobserve(entry.target); } });
+                }, { threshold: 0.5 });
+                document.querySelectorAll('.skill-progress').forEach(bar => observer.observe(bar));
+            }
+        }
+
+        class ActiveNavLink {
+            constructor() {
+                this.navLinks = document.querySelectorAll('nav a[href^="#"]');
+                window.addEventListener('scroll', () => {
+                    let current = '';
+                    document.querySelectorAll('section[id]').forEach(s => { if (scrollY >= s.offsetTop - 200) current = s.getAttribute('id'); });
+                    this.navLinks.forEach(link => { link.style.color = link.getAttribute('href').slice(1) === current ? 'var(--accent-secondary)' : 'var(--text-secondary)'; });
+                });
+            }
+        }
+
+        class SmoothScroll {
+            constructor() {
+                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                    anchor.addEventListener('click', (e) => {
+                        const href = anchor.getAttribute('href');
+                        if (href === '#') return;
+                        e.preventDefault();
+                        const target = document.querySelector(href);
+                        if (target) target.scrollIntoView({ behavior: 'smooth' });
+                    });
+                });
+            }
+        }
+
+        class CertFilter {
+            constructor() {
+                const tabs = document.querySelectorAll('.cert-tab');
+                const cards = document.querySelectorAll('.cert-card');
+                tabs.forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        tabs.forEach(t => t.classList.remove('active'));
+                        tab.classList.add('active');
+                        const filter = tab.getAttribute('data-filter');
+                        cards.forEach(card => { card.classList.toggle('hidden', filter !== 'all' && card.getAttribute('data-category') !== filter); });
+                    });
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            new TypingEffect('.typing-text', "Building intelligent data solutions with ML, AI & Cloud", 50);
+            new ScrollAnimationObserver();
+            new ParticleAnimation('particles-canvas');
+            new ScrollToTop('scrollTopBtn');
+            new SkillProgressBars();
+            new ActiveNavLink();
+            new SmoothScroll();
+            new CertFilter();
+        });
+    </script>
+</body>
+</html>
